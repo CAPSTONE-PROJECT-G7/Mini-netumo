@@ -8,6 +8,8 @@ const r = Router();
 r.get(
   '/',
   asyncHandler(async (req, res) => {
+    res.setHeader('Cache-Control', 'no-store');
+
     const rows = await Alert.findAll({
       where: { user_id: req.user.id },
       order: [['created_at', 'DESC']],

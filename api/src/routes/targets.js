@@ -10,6 +10,8 @@ const r = Router();
 r.get(
   '/',
   asyncHandler(async (req, res) => {
+    res.setHeader('Cache-Control', 'no-store');
+
     const targets = await Target.findAll({
       where: { user_id: req.user.id },
       attributes: ['id', 'label', 'url', 'paused'],
@@ -40,6 +42,7 @@ r.get(
     res.json(payload);
   })
 );
+
 
 /* POST /targets – create */
 r.post(

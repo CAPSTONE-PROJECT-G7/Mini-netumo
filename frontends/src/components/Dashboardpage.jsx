@@ -43,7 +43,12 @@ export default function DashboardPage() {
         {alerts.map(a => (
           <li key={a.id} className="list-group-item d-flex justify-content-between">
             <span><strong>{a.type}</strong> – {a.message}</span>
-            <span className="badge bg-secondary">{new Date(a.created_at).toLocaleString()}</span>
+    <span className="badge bg-secondary">
+  {new Date(a.created_at).toLocaleString()}
+</span>
+
+
+
           </li>
         ))}
       </ul>

@@ -18,19 +18,25 @@ export default function TargetTable({ targets, refresh }) {
         <tbody>
           {targets.map(t => (
             <tr key={t.id}>
-              <td>{t.label || "—"}</td>
-              <td><a href={t.url} target="_blank" rel="noreferrer">{t.url}</a></td>
-              <td className={t.isUp ? "text-success" : "text-danger"}>{t.isUp ? "UP" : "DOWN"}</td>
-              <td>{t.latency ?? "—"} ms</td>
-              <td className={t.daysCert <= 14 ? "text-warning" : undefined}>{t.daysCert ?? "—"} d</td>
-              <td className={t.daysDomain <= 14 ? "text-warning" : undefined}>{t.daysDomain ?? "—"} d</td>
-              <td>
-                <div className="btn-group btn-group-sm" role="group">
-                  <button className="btn btn-warning" onClick={() => togglePause(t.id)}>{t.paused ? "Resume" : "Pause"}</button>
-                  <button className="btn btn-danger" onClick={() => remove(t.id)}>Delete</button>
-                </div>
-              </td>
-            </tr>
+  <td>{t.label || "—"}</td>
+  <td><a href={t.url} target="_blank" rel="noreferrer">{t.url}</a></td>
+  <td className={t.isUp === true ? "text-success" : "text-danger"}>
+    {t.isUp === true ? "UP" : "DOWN"}
+  </td>
+  <td>{t.latency !== null ? `${t.latency} ms` : "—"}</td>
+  <td>{t.daysCert >= 0 ? `${t.daysCert} d` : '—'}</td>
+<td>{t.daysDomain >= 0 ? `${t.daysDomain} d` : '—'}</td>
+
+  <td>
+    <div className="btn-group btn-group-sm" role="group">
+      <button className="btn btn-warning" onClick={() => togglePause(t.id)}>
+        {t.paused ? "Resume" : "Pause"}
+      </button>
+      <button className="btn btn-danger" onClick={() => remove(t.id)}>Delete</button>
+    </div>
+  </td>
+</tr>
+
           ))}
         </tbody>
       </table>

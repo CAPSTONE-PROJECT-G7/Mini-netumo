@@ -24,5 +24,6 @@ module.exports = (sequelize, DataTypes) =>
     }
   }, {
     tableName: 'alerts',
-    underscored: true
+    underscored: true,
+    timestamps: true // ✅ Enables created_at & updated_at
   });
