@@ -1,9 +1,9 @@
 const tls = require('tls');
 const whois = require('whois-json');
 
-module.exports = async function probeExpiry (url) {
+module.exports = async function probeExpiry(url) {
   if (!url.startsWith('http')) {
-    url = 'https://' + url; // ✅ force https
+    url = 'https://' + url;
   }
 
   const { hostname, port = 443 } = new URL(url);
@@ -17,9 +17,17 @@ module.exports = async function probeExpiry (url) {
 
   const daysCert = Math.floor((new Date(cert.valid_to) - Date.now()) / 864e5);
 
-  const res  = await whois(hostname);
-  const exp  = res.expiryDate || res['Registrar Registration Expiration Date'];
-  const daysDomain = exp ? Math.floor((new Date(exp) - Date.now()) / 864e5) : -1;
+  //WHOIS
+  let daysDomain = -1;
+  try {
+    const res = await whois(hostname);
+    const exp = res.expiryDate || res['Registrar Registration Expiration Date'];
+    if (exp && !isNaN(Date.parse(exp))) {
+      daysDomain = Math.floor((new Date(exp) - Date.now()) / 864e5);
+    }
+  } catch (err) {
+    console.error(`❌ WHOIS failed for ${hostname}:`, err.message);
+  }
 
   return { daysCert, daysDomain };
 };

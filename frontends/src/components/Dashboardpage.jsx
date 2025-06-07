@@ -1,6 +1,7 @@
 // ── File: frontend/src/pages/DashboardPage.jsx ───────────────────────────
+import api from "../lib/axios";
 import { useEffect, useState } from "react";
-import axios from "axios";
+
 import TargetTable from "./../pages/TargetTable";
 
 export default function DashboardPage() {
@@ -9,7 +10,7 @@ export default function DashboardPage() {
   const [form, setForm] = useState({ url: "", label: "" });
 
   const loadData = async () => {
-    const [tRes, aRes] = await Promise.all([axios.get("/targets"), axios.get("/alerts")]);
+    const [tRes, aRes] = await Promise.all([api.get("/targets"), api.get("/alerts")]);
     setTargets(tRes.data);
     setAlerts(aRes.data);
   };
@@ -18,7 +19,7 @@ export default function DashboardPage() {
 
   const handleAdd = async (e) => {
     e.preventDefault();
-    await axios.post("/targets", form);
+    await api.post("/targets", form);
     setForm({ url: "", label: "" });
     loadData();
   };
@@ -42,10 +43,16 @@ export default function DashboardPage() {
       <ul className="list-group">
         {alerts.map(a => (
           <li key={a.id} className="list-group-item d-flex justify-content-between">
-            <span><strong>{a.type}</strong> – {a.message}</span>
-    <span className="badge bg-secondary">
-  {new Date(a.created_at).toLocaleString()}
+<span>
+  <strong>{a.type}</strong> – {a.message || 'No message'}
 </span>
+
+  <span className="badge bg-secondary">
+  {a.createdAt ? new Date(a.createdAt).toLocaleString() : '—'}
+</span>
+
+
+
 
 
 

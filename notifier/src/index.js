@@ -29,26 +29,26 @@ new Worker('alerts', async job => {
   console.log(`🔔 Processing ${type} alert for ${target.url} with value ${value}`);
 
   // Optional: Slack alert
-  if (process.env.SLACK_WEBHOOK?.startsWith("https://")) {
-    try {
-      await fetch(process.env.SLACK_WEBHOOK, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          text: `🚨 ${type} alert for ${target.url} — value: ${value}`
-        })
-      });
-    } catch (err) {
-      console.error('❌ Slack notification failed:', err.message);
-    }
-  }
+  // if (process.env.SLACK_WEBHOOK?.startsWith("https://")) {
+  //   try {
+  //     await fetch(process.env.SLACK_WEBHOOK, {
+  //       method: 'POST',
+  //       headers: { 'Content-Type': 'application/json' },
+  //       body: JSON.stringify({
+  //         text: `🚨 ${type} alert for ${target.url} — value: ${value}`
+  //       })
+  //     });
+  //   } catch (err) {
+  //     console.error('❌ Slack notification failed:', err.message);
+  //   }
+  // }
 
   // Email alert
   try {
     await mail.sendMail({
       from: process.env.MAIL_FROM,
       to: target.ownerEmail,
-      subject: `[Mini-Netumo] ${type} alert for ${target.label}`,
+      subject: `Mini-Netumo ${type} alert for ${target.label}`,
       text: `${target.url} → ${type} = ${value}`
     });
   } catch (err) {

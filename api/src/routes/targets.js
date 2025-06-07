@@ -62,11 +62,14 @@ r.patch(
       where: { id: req.params.id, user_id: req.user.id }
     });
     if (!t) return res.sendStatus(404);
-    t.paused = req.body.paused ?? !t.paused;
+
+    const newPausedValue = req.body?.paused ?? !t.paused; // safe access
+    t.paused = newPausedValue;
     await t.save();
     res.json(t);
   })
 );
+
 
 /* DELETE /targets/:id */
 r.delete(

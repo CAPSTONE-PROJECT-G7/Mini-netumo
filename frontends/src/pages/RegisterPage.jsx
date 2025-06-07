@@ -12,7 +12,7 @@ export default function RegisterPage() {
     e.preventDefault();
     try {
       await register(form.email, form.password);
-      navigate("/");
+      navigate("/login");
     } catch (err) { alert(err.response?.data?.error || err.message); }
   };
 

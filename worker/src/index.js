@@ -25,9 +25,10 @@ async function getActiveTargets() {
   return Target.findAll({
     where: { paused: false },
     attributes: ['id', 'url', 'label', 'user_id'],
-    include: [{ model: User, attributes: ['email'] }] // ✅ JOIN with User
+    //include: [{ model: User, attributes: ['email'] }] // ✅ JOIN with User
   });
 }
+
 
 
 // ✅ Save HTTP results
@@ -56,38 +57,52 @@ async function isFlapping(targetId) {
 }
 
 // ✅ Raise alert if not already exists
+// async function raiseAlert(target, type, value) {
+//   const existing = await Alert.findOne({
+//     where: {
+//       target_id: target.id,
+//       type,
+//       resolved: false
+//     }
+//   });
+// console.log("📧 Email will be sent to:", target.User?.email);
+
+//   if (existing) return;
+
+//   await Alert.create({
+//     user_id: target.user_id,
+//     target_id: target.id,
+//     type,
+//     message: `${type} alert – value: ${value}`,
+//     sent_via: 'pending'
+//   });
+
+//   const alertsQ = new Queue('alerts', { connection: redis });
+ 
+//   await alertsQ.add('notify', {
+//   target: {
+//     id: target.id,
+//     label: target.label,
+//     url: target.url,
+//     ownerEmail: target.User?.email || 'fallback@example.com'
+//   },
+//   type,
+//   value
+// });
+
+// }
+
 async function raiseAlert(target, type, value) {
-  const existing = await Alert.findOne({
-    where: {
-      target_id: target.id,
-      type,
-      resolved: false
-    }
-  });
-
-  if (existing) return;
-
   await Alert.create({
     user_id: target.user_id,
     target_id: target.id,
     type,
     message: `${type} alert – value: ${value}`,
-    sent_via: 'pending'
+    sent_via: 'pending',
   });
 
   const alertsQ = new Queue('alerts', { connection: redis });
- 
-  await alertsQ.add('notify', {
-  target: {
-    id: target.id,
-    label: target.label,
-    url: target.url,
-    ownerEmail: target.User?.email || 'fallback@example.com'
-  },
-  type,
-  value
-});
-
+  await alertsQ.add('notify', { target, type, value });
 }
 
 // ✅ Schedule HTTP checks every 5 minutes

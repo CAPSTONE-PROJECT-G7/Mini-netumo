@@ -1,12 +1,12 @@
 // ── File: frontend/src/components/TargetTable.jsx ────────────────────────
-import axios from "axios";
+import api from "../lib/axios"
 
 export default function TargetTable({ targets, refresh }) {
   const togglePause = async (id) => {
-    await axios.patch(`/targets/${id}`); refresh();
+    await api.patch(`/targets/${id}`); refresh();
   };
   const remove = async (id) => {
-    if (window.confirm("Delete this monitor?")) { await axios.delete(`/targets/${id}`); refresh(); }
+    if (window.confirm("Delete this monitor?")) { await api.delete(`/targets/${id}`); refresh(); }
   };
 
   return (
@@ -24,8 +24,9 @@ export default function TargetTable({ targets, refresh }) {
     {t.isUp === true ? "UP" : "DOWN"}
   </td>
   <td>{t.latency !== null ? `${t.latency} ms` : "—"}</td>
-  <td>{t.daysCert >= 0 ? `${t.daysCert} d` : '—'}</td>
-<td>{t.daysDomain >= 0 ? `${t.daysDomain} d` : '—'}</td>
+<td>{t.daysCert != null && t.daysCert >= 0 ? `${t.daysCert} d` : '—'}</td>
+<td>{t.daysDomain != null && t.daysDomain >= 0 ? `${t.daysDomain} d` : '—'}</td>
+
 
   <td>
     <div className="btn-group btn-group-sm" role="group">
