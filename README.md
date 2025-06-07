@@ -20,19 +20,19 @@ A full-stack uptime and domain monitor system with SSL expiry checks, domain WHO
 ##  Project Structure
 
 Mini-netumo/
-├── api/ # Express API with Sequelize ORM
-├── worker/ # Background workers for checks and SSL/domain expiry
-├── notifier/ # Email/Slack notification service
-├── frontends/ # React frontend for user dashboard
-├── nginx/ # NGINX reverse proxy and load balancer
-├── docker-compose.yml # Multi-service Docker setup
-├── .env # Environment variables (not committed)
-└── README.md # This file
+├── api/  Express API with Sequelize ORM
+├── worker/  Background workers for checks and SSL/domain expiry
+├── notifier/  Email/Slack notification service
+├── frontends/  React frontend for user dashboard
+├── nginx/  NGINX reverse proxy and load balancer
+├── docker-compose.yml  Multi-service Docker setup
+├── .env  Environment variables (not committed)
+└── README.md  This file
 
 
 ---
 
-## 🚀 Features
+##  Features
 
 - Add & monitor websites/URLs
 - Pause or resume monitoring
@@ -44,12 +44,12 @@ Mini-netumo/
 
 ---
 
-## ⚙️ Setup Locally
+##  Setup Locally
 
 ### 1. Clone the Repo
 
 ```bash
-git clone https://github.com/your-username/Mini-netumo.git
+git clone https://github.com/CAPSTONE-PROJECT-G7/Mini-netumo.git
 cd Mini-netumo
 ```
 
